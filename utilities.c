@@ -6,11 +6,17 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/20 02:37:40 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:57:44 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philosophers.h"
+
+void ft_perror(char *error_msg)
+{
+    printf(RED_COLOR"%s\n"RESET, error_msg);
+    exit(EXIT_FAILURE);
+}
 
 void fill_struct(char **data, int ac, t_infos *info)
 {

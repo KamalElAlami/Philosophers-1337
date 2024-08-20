@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/20 03:02:36 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:55:14 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,7 @@ int main(int ac, char **av)
 	t_infos info;
 	
 	if (ac != 5 && ac != 6)
-	{
-		printf("Incorrect Input\n");
-		return (1);
-	}
+		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
 	if (!parse_input(av, ac, &info))
-	{
-		printf("incorrect data form\n");
-		return (1);
-	}
+		ft_perror("Enter a raw number that doesn't exceed INT_MAX");
 }
