@@ -1,0 +1,3 @@
+[submodule "Libft-1337"]
+	path = Libft-1337
+	url = https://github.com/KamalElAlami/Libft-1337.git
