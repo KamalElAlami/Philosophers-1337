@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/20 21:55:14 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/21 13:00:45 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 // ./philo  num_of_philos time_die time_eat time_sleep
 
+void data_init(t_infos info, t_philosopher **philos)
+{
+	
+}
 
 int parse_input(char **data, int ac, t_infos *philo)
 {
@@ -39,10 +43,12 @@ int parse_input(char **data, int ac, t_infos *philo)
 }
 int main(int ac, char **av)
 {
-	t_infos info;
-	
+	t_infos info; 
+	t_philosopher *abtal;
+
 	if (ac != 5 && ac != 6)
 		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
 	if (!parse_input(av, ac, &info))
 		ft_perror("Enter a raw number that doesn't exceed INT_MAX");
+	data_init(info, &abtal);
 }

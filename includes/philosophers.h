@@ -26,15 +26,20 @@ typedef struct s_infos
 
 typedef struct s_philosopher
 {
+    int index;
     int fork;
     int meals_eaten;
     long last_meal;
     int flag;
+    t_infos info;
     pthread_t thread;
     pthread_mutex_t *forchette;
     struct t_philosofer *next;
 
 } t_philosopher;
+
+
+
 
 
 
