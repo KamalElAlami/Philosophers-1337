@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/23 11:13:38 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:53:22 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ typedef enum e_choices
 {
     CREATE,
     JOIN,
-    DESTROY,
+    DETACH,
     INIT,
     LOCK,
     UNLOCK,
+    DESTROY,
 } e_choices;
 
 typedef struct s_infos
@@ -55,6 +56,7 @@ typedef struct t_philosopher
     int fork;
     int meals_eaten;
     long last_meal;
+    int has_forks;
     t_infos info;
     pthread_t thread;
     pthread_mutex_t *forchette;
@@ -67,7 +69,7 @@ typedef struct t_philosopher
 
 // helpers
 
-t_philosopher *new_batal(int index);
+t_philosopher *new_batal(int index, t_infos info);
 void add_lbatal(t_philosopher **head, t_philosopher *node);
 void print_list(t_philosopher *list);
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice);
@@ -80,5 +82,6 @@ void fill_struct(char **data, int ac, t_infos *info);
 void ft_perror(char *error_msg);
 void error_handler(int error);
 void data_init(t_infos info, t_philosopher **philos);
+void *routine_labtal(void *abtal);
 
 

@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/22 15:10:58 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/23 14:25:00 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,17 @@ void error_handler(int error)
         ft_perror("Error: Unknown Error");
 }
 
-t_philosopher *new_batal(int index)
+t_philosopher *new_batal(int index, t_infos info)
 {
     t_philosopher *node;
     
     node = malloc(sizeof(t_philosopher));
     node->index = index;
-    node->flag = 0;
+    node->has_forks = 0;
     node->fork = 0;
     node->last_meal = 0;
     node->meals_eaten = 0;
+    node->info = info;
     return (node);
 }
 
