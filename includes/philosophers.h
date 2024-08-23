@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/22 15:31:50 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:13:38 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef enum e_choices
 
 typedef struct s_infos
 {
+    long start_time;
     int num_of_philos;
     int time_to_die;
     int time_to_eat;
@@ -54,7 +55,6 @@ typedef struct t_philosopher
     int fork;
     int meals_eaten;
     long last_meal;
-    int flag;
     t_infos info;
     pthread_t thread;
     pthread_mutex_t *forchette;
@@ -71,6 +71,7 @@ t_philosopher *new_batal(int index);
 void add_lbatal(t_philosopher **head, t_philosopher *node);
 void print_list(t_philosopher *list);
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice);
+long gettimestamp(void);
 
 // parsing
 

@@ -6,11 +6,18 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/22 15:18:35 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:01:29 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philosophers.h"
+
+long gettimestamp(void)
+{
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
 
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice)
 {
@@ -36,6 +43,7 @@ void fill_struct(char **data, int ac, t_infos *info)
         (*info).meals = ft_atoi(data[5]);
     else
         (*info).meals = -1;
+    (*info).start_time = gettimestamp();
     (*info).num_of_philos = ft_atoi(data[1]);
     (*info).time_to_die = ft_atoi(data[2]) * 1e3;
     (*info).time_to_eat = ft_atoi(data[3]) * 1e3;
@@ -45,11 +53,8 @@ void fill_struct(char **data, int ac, t_infos *info)
 int check_overflow(char *number)
 {
     long nbr;
-    int sign;
     
     nbr = 0;
-    sign = 1;
-    
     while (*number)
     {
         nbr = nbr * 10 + *number - '0';
