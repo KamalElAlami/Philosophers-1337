@@ -5,7 +5,7 @@ FLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
 
-M_FILES = main.c utilities.c helpers.c
+M_FILES = main.c utilities.c helpers.c routines.c
 
 INCS = ./Libft-1337/libft.h
 

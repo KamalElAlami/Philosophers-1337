@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/23 15:54:47 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:30:38 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void ft_mutex(pthread_mutex_t *mutex, e_choices choice)
     else
         ft_perror("Incorrect MUTEX choice");  
 }
-void ft_pthread( t_philosopher **philos, e_choices choice)
+void ft_pthread(pthread_t *thread, t_philosopher **philos, e_choices choice)
 {
     if (choice == CREATE)
-        error_handler(pthread_create(&(*philos)->thread, NULL, routine_labtal, *philos));
+        error_handler(pthread_create(thread, NULL, routine_labtal, *philos));
     else if (choice == JOIN)
-        error_handler(pthread_join((*philos)->thread, NULL));
+        error_handler(pthread_join(*thread, NULL));
     else if (choice == DETACH)
-        error_handler(pthread_detach((*philos)->thread));
+        error_handler(pthread_detach(*thread));
     else
         ft_perror("Incorrect pTHREAD choice");  
 }
@@ -56,10 +56,14 @@ void fill_struct(char **data, int ac, t_infos *info)
         (*info).meals = ft_atoi(data[5]);
     else
         (*info).meals = -1;
+    (*info).end_simulation = 0;
     (*info).num_of_philos = ft_atoi(data[1]);
-    (*info).time_to_die = ft_atoi(data[2]) * 1e3;
+    (*info).time_to_die = ft_atoi(data[2]);
     (*info).time_to_eat = ft_atoi(data[3]) * 1e3;
     (*info).time_to_sleep = ft_atoi(data[4]) * 1e3;
+    (*info).end_mutex = malloc(sizeof(pthread_mutex_t));
+    ft_mutex((*info).end_mutex, INIT);  
+    
 }
 
 int check_overflow(char *number)

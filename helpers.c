@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/23 14:25:00 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/25 14:56:56 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void error_handler(int error)
 {
-    if (error == EAGAIN)
+    if (error == 0)
+        return ;
+    else if (error == EAGAIN)
         ft_perror("Error: Insufficient resources to initialize mutex");
     else if (error == EINVAL)
         ft_perror("Error: Invalid argument");
@@ -34,7 +36,7 @@ void error_handler(int error)
         ft_perror("Error: Unknown Error");
 }
 
-t_philosopher *new_batal(int index, t_infos info)
+t_philosopher *new_batal(int index, t_infos *info)
 {
     t_philosopher *node;
     
@@ -68,9 +70,11 @@ void print_list(t_philosopher *list)
     t_philosopher *tmp;
 
     tmp = list;
-    while (tmp->next != list)
+    while (tmp->next)
     {
         printf("index => %d\n", tmp->index);
+        if (tmp->next == list)
+            break ;
         tmp = tmp->next;
     }
 }

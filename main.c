@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/23 15:31:17 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:30:48 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,45 @@
 
 // ./philo  num_of_philos time_die time_eat time_sleep 
 
-// void create_threads(t_philosopher **philos)
-// {
-// 	int i;
-// 	t_philosopher *temp;
+void create_threads(t_philosopher **philos)
+{
+	int i;
+	t_philosopher *temp;
 
-// 	i = 0;
-// 	temp = *philos;
-// 	while (i <= temp->info.num_of_philos)
-// 	{
-		
-// 	}
-// }
+	i = 0;
+	temp = *philos;
+	while (i < temp->info->num_of_philos)
+	{
+		ft_pthread(&(temp->thread), &temp, CREATE);
+		temp = temp->next;
+		i++;
+	}
+	i = 0;
+	temp = *philos;
+	while (i < temp->info->num_of_philos)
+	{
+		ft_pthread(&(temp->thread), &temp, JOIN);
+		temp = temp->next;
+		i++;
+	}
+}
 
-void setup_data(t_infos info, t_philosopher **philos)
+void setup_data(t_infos *info, t_philosopher **philos)
 {
 	int i;
 	t_philosopher *tmp;
-	i = 0;
-	while (i <= info.num_of_philos)
+	i = 1;
+	while (i <= (*info).num_of_philos)
 		add_lbatal(philos, new_batal(i++, info));
 	tmp = *philos;
-	while (tmp->next != *philos)
+	while (tmp->next)
 	{
 		tmp->forchette = malloc(sizeof(pthread_mutex_t));
 		if (!tmp->forchette)
 			ft_perror("Error: Somethings Wrong With Malloc");
 		ft_mutex(tmp->forchette, INIT);
+		if (tmp->next == *philos)
+			break;
 		tmp = tmp->next;
 	}	
 }
@@ -76,6 +88,8 @@ int main(int ac, char **av)
 		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
 	if (!parse_input(av, ac, &info))
 		ft_perror("Enter a raw number that doesn't exceed INT_MAX");
-	setup_data(info, &abtal);
-	print_list(abtal);
+	setup_data(&info, &abtal);
+	create_threads(&abtal);
+	// printf("shared value is <======= %d =======>\n", info.end_simulation);
+	// print_list(abtal);
 }

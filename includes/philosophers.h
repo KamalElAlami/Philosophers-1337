@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/23 15:53:22 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:50:06 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,15 @@ typedef enum e_choices
     DESTROY,
 } e_choices;
 
+typedef enum e_state
+{
+    TAKE_FORK,
+    EAT,
+    SLEEP,
+    THINK,
+    DIE,
+} e_state;
+
 typedef struct s_infos
 {
     long start_time;
@@ -47,6 +56,8 @@ typedef struct s_infos
     int time_to_eat;
     int time_to_sleep;
     int meals;
+    int end_simulation;
+    pthread_mutex_t *end_mutex;
 }   t_infos;
 
 
@@ -57,7 +68,7 @@ typedef struct t_philosopher
     int meals_eaten;
     long last_meal;
     int has_forks;
-    t_infos info;
+    t_infos *info;
     pthread_t thread;
     pthread_mutex_t *forchette;
     struct t_philosopher *next;
@@ -69,10 +80,11 @@ typedef struct t_philosopher
 
 // helpers
 
-t_philosopher *new_batal(int index, t_infos info);
+t_philosopher *new_batal(int index, t_infos *info);
 void add_lbatal(t_philosopher **head, t_philosopher *node);
 void print_list(t_philosopher *list);
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice);
+void ft_pthread(pthread_t *thread, t_philosopher **philos, e_choices choice);
 long gettimestamp(void);
 
 // parsing
