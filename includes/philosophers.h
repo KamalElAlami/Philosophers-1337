@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/26 17:50:06 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:28:59 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ typedef enum e_state
     DIE,
 } e_state;
 
+typedef enum e_time
+{
+    MILLI,
+    MICRO,
+} e_time;
+
 typedef struct s_infos
 {
     long start_time;
@@ -58,6 +64,7 @@ typedef struct s_infos
     int meals;
     int end_simulation;
     pthread_mutex_t *end_mutex;
+    pthread_mutex_t *print_mutex;
 }   t_infos;
 
 
@@ -67,10 +74,11 @@ typedef struct t_philosopher
     int fork;
     int meals_eaten;
     long last_meal;
-    int has_forks;
+    int fork_taken;
     t_infos *info;
     pthread_t thread;
     pthread_mutex_t *forchette;
+    pthread_mutex_t *safty;
     struct t_philosopher *next;
 
 } t_philosopher;
@@ -85,7 +93,7 @@ void add_lbatal(t_philosopher **head, t_philosopher *node);
 void print_list(t_philosopher *list);
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice);
 void ft_pthread(pthread_t *thread, t_philosopher **philos, e_choices choice);
-long gettimestamp(void);
+long gettimestamp(e_time unit);
 
 // parsing
 

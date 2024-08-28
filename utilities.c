@@ -6,18 +6,23 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/26 18:30:38 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:14:01 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philosophers.h"
 
-long gettimestamp(void)
+long gettimestamp(e_time unit)
 {
     struct timeval tv;
-    gettimeofday(&tv,NULL);
-    return((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    gettimeofday(&tv, NULL);
+    
+    if (unit == MILLI)
+        return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    else // MICROSECONDS
+        return ((tv.tv_sec * 1000000) + tv.tv_usec);
 }
+
 
 void ft_mutex(pthread_mutex_t *mutex, e_choices choice)
 {
@@ -58,12 +63,13 @@ void fill_struct(char **data, int ac, t_infos *info)
         (*info).meals = -1;
     (*info).end_simulation = 0;
     (*info).num_of_philos = ft_atoi(data[1]);
-    (*info).time_to_die = ft_atoi(data[2]);
+    (*info).time_to_die = ft_atoi(data[2]) * 1e3;
     (*info).time_to_eat = ft_atoi(data[3]) * 1e3;
     (*info).time_to_sleep = ft_atoi(data[4]) * 1e3;
     (*info).end_mutex = malloc(sizeof(pthread_mutex_t));
     ft_mutex((*info).end_mutex, INIT);  
-    
+    (*info).print_mutex = malloc(sizeof(pthread_mutex_t));
+    ft_mutex((*info).print_mutex, INIT);  
 }
 
 int check_overflow(char *number)

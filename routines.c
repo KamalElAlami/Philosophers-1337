@@ -6,72 +6,102 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/26 18:44:30 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:38:29 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philosophers.h"
 
-
-void print_state(int index, t_infos *info, e_state state)
+int check_death(t_philosopher *batal)
 {
-    if (!info->end_simulation)
+    ft_mutex(batal->info->end_mutex, LOCK);
+    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && batal->info->end_simulation == 0)
     {
-        if (state == TAKE_FORK)
-            printf("%ld %d has taken a fork\n", gettimestamp() - info->start_time, index);
-        else if (state == EAT)
-            printf("%ld %d is Eating\n", gettimestamp() - info->start_time, index);
-        else if (state == SLEEP)
-            printf("%ld %d is Sleeping\n", gettimestamp() - info->start_time, index);
-        else if (state == THINK)
-            printf("%ld %d is Thinking\n", gettimestamp() - info->start_time, index);
-        else if (state == DIE)
-            printf("%ld %d is Died\n", gettimestamp() - info->start_time, index);
-        
+        batal->info->end_simulation = 1;
+        ft_mutex(batal->info->end_mutex, UNLOCK);
+        return (1);
+    }
+    ft_mutex(batal->info->end_mutex, UNLOCK);
+    return (0);
+}
+
+void ft_usleep(long microseconds)
+{
+    long start;
+    long current;
+
+    start = gettimestamp(MICRO);
+    while (1)
+    {
+        current = gettimestamp(MICRO);
+        if (current - start >= microseconds)
+            break;
+        usleep(100);
     }
 }
 
 
-void *routine_labtal(void *abtal)
+void print_state(t_philosopher *batal, e_state state)
 {
-    t_philosopher *rijal = (t_philosopher *)abtal;
-    while (!rijal->info->end_simulation)
+    ft_mutex(batal->info->print_mutex, LOCK);
+    if (!batal->info->end_simulation)
     {
-        // Taking forks
-        ft_mutex(rijal->forchette, LOCK);
-        print_state(rijal->index, rijal->info, TAKE_FORK);
-        ft_mutex(rijal->next->forchette, LOCK);
-        print_state(rijal->index, rijal->info, TAKE_FORK);
+        if (state == TAKE_FORK )
+            printf("%ld %d has taken a fork\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
+        else if (state == EAT )
+            printf("%ld %d is eating\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
+        else if (state == SLEEP )
+            printf("%ld %d is sleeping\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
+        else if (state == THINK )
+            printf("%ld %d is thinking\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
+        else if (state == DIE )
+            printf("%ld %d died\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
+        
+    }
+    ft_mutex(batal->info->print_mutex, UNLOCK);
+}
 
-        // Eating
-        print_state(rijal->index, rijal->info, EAT);
-        rijal->last_meal = gettimestamp();
+void *routine_labtal(void *philo)
+{
+    t_philosopher *rijal;
+    rijal = (t_philosopher *)philo;
+
+    while (1)
+    {
+        ft_mutex(rijal->safty, LOCK);
+        // Khud l-forchettes
+        if (rijal->index % 2 == 0) {
+            ft_mutex(rijal->forchette, LOCK);
+            print_state(rijal, TAKE_FORK);
+            ft_mutex(rijal->next->forchette, LOCK);
+            print_state(rijal, TAKE_FORK);
+        } else {
+            ft_mutex(rijal->next->forchette, LOCK);
+            print_state(rijal, TAKE_FORK);
+            ft_mutex(rijal->forchette, LOCK);
+            print_state(rijal, TAKE_FORK);
+        }
+
+        // Kul
+        print_state(rijal, EAT);
+        rijal->last_meal = gettimestamp(MICRO);
+        ft_usleep(rijal->info->time_to_eat);
         rijal->meals_eaten++;
-        usleep(rijal->info->time_to_eat);  // Convert to microseconds
 
-        // Dropping forks
         ft_mutex(rijal->forchette, UNLOCK);
         ft_mutex(rijal->next->forchette, UNLOCK);
+        // N3ass
+        print_state(rijal, SLEEP);
+        ft_usleep(rijal->info->time_to_sleep);
 
-        // Sleeping
-        print_state(rijal->index, rijal->info, SLEEP);
-        usleep(rijal->info->time_to_sleep);  // Convert to microseconds
+        // Fkar
+        print_state(rijal, THINK);
 
-        // Thinking
-        print_state(rijal->index, rijal->info, THINK);
-
-        // Death check
-        if (gettimestamp() - rijal->last_meal >= rijal->info->time_to_die ||
-            (rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals))
-            {
-                ft_mutex(rijal->info->end_mutex, LOCK);
-                rijal->info->end_simulation = 1;
-                ft_mutex(rijal->info->end_mutex, LOCK);
-            }
-        if (rijal->index != 1)
-            printf("enddd => %d\n", rijal->info->end_simulation);
-        if ((gettimestamp() - rijal->last_meal) >= rijal->info->time_to_die)
-            print_state(rijal->index, rijal->info, DIE);
+        // Check wach kaml l-meals dyalu
+        if ((rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals) || check_death(rijal))
+            break;
+        ft_mutex(rijal->safty, UNLOCK);
     }
+
     return NULL;
 }

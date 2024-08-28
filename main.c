@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/26 17:30:48 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:30:51 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ void setup_data(t_infos *info, t_philosopher **philos)
 		tmp->forchette = malloc(sizeof(pthread_mutex_t));
 		if (!tmp->forchette)
 			ft_perror("Error: Somethings Wrong With Malloc");
+		tmp->safty = malloc(sizeof(pthread_mutex_t));
+		if (!tmp->safty)
+			ft_perror("Error: Somethings Wrong With Malloc");
 		ft_mutex(tmp->forchette, INIT);
+		ft_mutex(tmp->safty, INIT);
 		if (tmp->next == *philos)
 			break;
 		tmp = tmp->next;
@@ -83,7 +87,7 @@ int main(int ac, char **av)
 	t_infos info; 
 	t_philosopher *abtal;
 
-	info.start_time = gettimestamp();
+	info.start_time = gettimestamp(MILLI);
 	if (ac != 5 && ac != 6)
 		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
 	if (!parse_input(av, ac, &info))

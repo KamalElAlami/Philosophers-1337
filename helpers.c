@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/25 14:56:56 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:58:08 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ t_philosopher *new_batal(int index, t_infos *info)
     
     node = malloc(sizeof(t_philosopher));
     node->index = index;
-    node->has_forks = 0;
+    node->fork_taken = 0;
     node->fork = 0;
-    node->last_meal = 0;
+    node->last_meal = gettimestamp(MICRO);
     node->meals_eaten = 0;
     node->info = info;
     return (node);
