@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/28 22:58:08 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/08/31 08:47:10 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,24 @@ void print_list(t_philosopher *list)
     tmp = list;
     while (tmp->next)
     {
-        printf("index => %d\n", tmp->index);
+        printf("index => %d\n", tmp->info->end_simulation);
         if (tmp->next == list)
             break ;
         tmp = tmp->next;
+    }
+}
+
+void ft_usleep(long microseconds)
+{
+    long start;
+    long current;
+
+    start = gettimestamp(MICRO);
+    while (1)
+    {
+        current = gettimestamp(MICRO);
+        if (current - start >= microseconds)
+            break;
+        usleep(100);
     }
 }
