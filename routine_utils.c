@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 08:48:25 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/07 23:37:54 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:43:26 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void print_state(t_philosopher *batal, e_state state)
 {
     ft_mutex(batal->info->print_mutex, LOCK);
-    ft_mutex(batal->info->end_simulation, LOCK);
-    if (!batal->info->end_simulation)
+    if (!batal->info->end_simulation && state != DIE)
     {
         if (state == TAKE_FORK && !check_death(batal))
             printf("%ld %d has taken a fork\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
@@ -27,10 +26,7 @@ void print_state(t_philosopher *batal, e_state state)
         else if (state == THINK && !check_death(batal))
             printf("%ld %d is thinking\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
     }
-    // else if (state == DIE)
-    //     printf("%ld %d died\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
     ft_mutex(batal->info->print_mutex, UNLOCK);
-    ft_mutex(batal->info->end_simulation, LOCK);
 }
 
 int take_forks(t_philosopher *rijal)
@@ -68,7 +64,7 @@ int eat(t_philosopher *rijal)
     }
     print_state(rijal, EAT);
     rijal->last_meal = gettimestamp(MICRO);
-    ft_usleep(rijal->info->time_to_eat);
+    ft_usleep(rijal->info->time_to_eat, rijal);
     rijal->meals_eaten++;
     return (0);
 }
@@ -95,7 +91,7 @@ int sleepnthink(t_philosopher *rijal)
         return (1);
     }
     print_state(rijal, SLEEP);
-    ft_usleep(rijal->info->time_to_sleep);
+    ft_usleep(rijal->info->time_to_sleep, rijal);
     if (rijal->info->end_simulation)
     {
         ft_mutex(rijal->safty, UNLOCK);

@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/31 08:47:10 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:22:43 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,12 @@ void add_lbatal(t_philosopher **head, t_philosopher *node)
         node->next = *head;
     }
     tmp = *head;
-    while (tmp->next != *head)
+    while (tmp->next)
+    {
+        if (tmp->next == *head)
+            break ;
         tmp = tmp->next;
+    }
     tmp->next = node;
     node->next = *head;    
 }
@@ -79,7 +83,7 @@ void print_list(t_philosopher *list)
     }
 }
 
-void ft_usleep(long microseconds)
+void ft_usleep(long microseconds, t_philosopher *rijal)
 {
     long start;
     long current;
@@ -88,7 +92,7 @@ void ft_usleep(long microseconds)
     while (1)
     {
         current = gettimestamp(MICRO);
-        if (current - start >= microseconds)
+        if (current - start >= microseconds || gettimestamp(MICRO) - rijal->last_meal >= rijal->info->time_to_die)
             break;
         usleep(100);
     }

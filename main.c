@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/01 15:53:51 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:05:44 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int parse_input(char **data, int ac, t_infos *philo)
 	int j;
 
 	i = 1;
+	if (!data[1] || !data[2] || !data[3] || !data[4])
+		return (0);
 	while (data[i])
 	{
 		j = 0;
@@ -79,6 +81,8 @@ int parse_input(char **data, int ac, t_infos *philo)
 			return (0);
 		i++;
 	}
+	if (!check_validity(data))
+		return (0);
 	fill_struct(data, ac, philo);
 	return (1);
 }
@@ -91,7 +95,7 @@ int main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
 	if (!parse_input(av, ac, &info))
-		ft_perror("Enter a raw number that doesn't exceed INT_MAX");
+		ft_perror("Error: Invalid Input");
 	setup_data(&info, &abtal);
 	create_threads(&abtal);
 	// printf("shared value is <======= %d =======>\n", info.end_simulation);

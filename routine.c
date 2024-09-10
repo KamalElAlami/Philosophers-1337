@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/07 18:05:46 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:41:35 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void *routine_labtal(void *philo)
 
     while (!rijal->info->end_simulation)
     {
-        ft_mutex(rijal->safty, LOCK);
         if (take_forks(rijal))
         {
             ft_mutex(rijal->safty, UNLOCK);
@@ -57,7 +56,6 @@ void *routine_labtal(void *philo)
             print_state(rijal, DIE);
             break;
         }
-        ft_mutex(rijal->safty, UNLOCK);
     }
 
     return NULL;
