@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:41:35 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 17:49:03 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ void *routine_labtal(void *philo)
     while (!rijal->info->end_simulation)
     {
         if (take_forks(rijal))
-        {
-            ft_mutex(rijal->safty, UNLOCK);
             break;
-        }
         if (eat(rijal))
             break;
         if (drop_forks(rijal))
@@ -46,16 +43,9 @@ void *routine_labtal(void *philo)
         if (sleepnthink(rijal))
             break;
         if ((rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals))
-        {
-            ft_mutex(rijal->safty, UNLOCK);    
             break;
-        }
         if (rijal->info->end_simulation)
-        {
-            ft_mutex(rijal->safty, UNLOCK);
-            print_state(rijal, DIE);
             break;
-        }
     }
 
     return NULL;

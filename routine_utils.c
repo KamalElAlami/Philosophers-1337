@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 08:48:25 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:43:26 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/10 19:54:16 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,16 @@ void print_state(t_philosopher *batal, e_state state)
 
 int take_forks(t_philosopher *rijal)
 {
-        if (rijal->index % 2 == 0) {
-            if (rijal->info->end_simulation)
-                return (1);
-            ft_mutex(rijal->forchette, LOCK);
-            print_state(rijal, TAKE_FORK);
-            if (rijal->info->end_simulation)
-                return (1);
-            ft_mutex(rijal->next->forchette, LOCK);
-            print_state(rijal, TAKE_FORK);
-        } else {
-            if (rijal->info->end_simulation)
-                return (1);
-            ft_mutex(rijal->next->forchette, LOCK);
-            print_state(rijal, TAKE_FORK);
-            if (rijal->info->end_simulation)
-                return (1);
-            ft_mutex(rijal->forchette, LOCK);
-            print_state(rijal, TAKE_FORK);
-        }
+    if (rijal->index % 2 != 0 && rijal->meals_eaten == 0) 
+        ft_usleep(rijal->info->time_to_eat / 2, rijal);
+    if (rijal->info->end_simulation)
+        return (1);
+    ft_mutex(rijal->forchette, LOCK);
+    print_state(rijal, TAKE_FORK);
+    if (rijal->info->end_simulation)
+        return (1);
+    ft_mutex(rijal->next->forchette, LOCK);
+    print_state(rijal, TAKE_FORK);
     return (0);
 }
 
