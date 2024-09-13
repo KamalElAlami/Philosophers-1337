@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 20:15:08 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:27:00 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 void error_handler(int error)
 {
@@ -40,7 +40,7 @@ t_philosopher *new_batal(int index, t_infos *info)
 {
     t_philosopher *node;
     
-    node = malloc(sizeof(t_philosopher));
+    node = ft_malloc(sizeof(t_philosopher), 0);
     node->index = index;
     node->fork_taken = 0;
     node->fork = 0;

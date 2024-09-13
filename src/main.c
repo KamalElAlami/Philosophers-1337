@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 17:36:26 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:28:54 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philosophers.h"
+#include "../includes/philosophers.h"
 
-// ./philo  num_of_philos time_die time_eat time_sleep 
+void leaks(void)
+{
+	system("leaks philo");
+}
 
 void create_threads(t_philosopher **philos)
 {
@@ -44,17 +47,11 @@ void setup_data(t_infos *info, t_philosopher **philos)
 	i = 1;
 	while (i <= (*info).num_of_philos)
 		add_lbatal(philos, new_batal(i++, info));
-	print_list(*philos);
-	// return ;
 	tmp = *philos;
 	while (tmp->next)
 	{
-		tmp->forchette = malloc(sizeof(pthread_mutex_t));
-		if (!tmp->forchette)
-			ft_perror("Error: Somethings Wrong With Malloc");
-		tmp->safty = malloc(sizeof(pthread_mutex_t));
-		if (!tmp->safty)
-			ft_perror("Error: Somethings Wrong With Malloc");
+		tmp->forchette = ft_malloc(sizeof(pthread_mutex_t), 0);
+		tmp->safty = ft_malloc(sizeof(pthread_mutex_t), 0);
 		ft_mutex(tmp->forchette, INIT);
 		ft_mutex(tmp->safty, INIT);
 		if (tmp->next == *philos)
@@ -90,6 +87,7 @@ int parse_input(char **data, int ac, t_infos *philo)
 }
 int main(int ac, char **av)
 {
+	atexit(leaks);
 	t_infos info; 
 	t_philosopher *abtal;
 

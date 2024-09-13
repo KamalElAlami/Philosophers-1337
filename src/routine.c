@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 17:49:03 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:18:19 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 int check_death(t_philosopher *batal)
 {

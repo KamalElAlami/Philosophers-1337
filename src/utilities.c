@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/08/28 23:14:01 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:03:46 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 long gettimestamp(e_time unit)
 {
@@ -19,7 +19,7 @@ long gettimestamp(e_time unit)
     
     if (unit == MILLI)
         return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-    else // MICROSECONDS
+    else
         return ((tv.tv_sec * 1000000) + tv.tv_usec);
 }
 
@@ -52,6 +52,7 @@ void ft_pthread(pthread_t *thread, t_philosopher **philos, e_choices choice)
 void ft_perror(char *error_msg)
 {
     printf(RED_COLOR"%s\n"RESET, error_msg);
+    ft_malloc(0, 1);
     exit(EXIT_FAILURE);
 }
 
@@ -66,9 +67,9 @@ void fill_struct(char **data, int ac, t_infos *info)
     (*info).time_to_die = ft_atoi(data[2]) * 1e3;
     (*info).time_to_eat = ft_atoi(data[3]) * 1e3;
     (*info).time_to_sleep = ft_atoi(data[4]) * 1e3;
-    (*info).end_mutex = malloc(sizeof(pthread_mutex_t));
+    (*info).end_mutex = ft_malloc(sizeof(pthread_mutex_t), 0);
     ft_mutex((*info).end_mutex, INIT);  
-    (*info).print_mutex = malloc(sizeof(pthread_mutex_t));
+    (*info).print_mutex = ft_malloc(sizeof(pthread_mutex_t), 0);
     ft_mutex((*info).print_mutex, INIT);  
 }
 

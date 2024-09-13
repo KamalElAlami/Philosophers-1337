@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 12:58:30 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:20:23 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,11 @@ typedef struct t_philosopher
 
 } t_philosopher;
 
-
+typedef struct t_collector
+{
+    void *ptr;
+    struct t_collector *next;
+} t_collector;
 
 
 // helpers
@@ -102,6 +106,7 @@ void fill_struct(char **data, int ac, t_infos *info);
 void ft_perror(char *error_msg);
 void error_handler(int error);
 void data_init(t_infos info, t_philosopher **philos);
+void *ft_malloc(size_t size, int flag);
 
 
 // routine 

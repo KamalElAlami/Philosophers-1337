@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 08:48:25 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/10 19:54:16 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:18:14 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philosophers.h"
+#include "../includes/philosophers.h"
 
 void print_state(t_philosopher *batal, e_state state)
 {
