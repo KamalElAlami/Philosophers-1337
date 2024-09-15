@@ -6,7 +6,7 @@
 /*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 16:20:23 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/15 15:37:15 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_infos
     int time_to_sleep;
     int meals;
     int end_simulation;
-    pthread_mutex_t *end_mutex;
+    pthread_mutex_t *safety;
     pthread_mutex_t *print_mutex;
 }   t_infos;
 
@@ -78,7 +78,6 @@ typedef struct t_philosopher
     t_infos *info;
     pthread_t thread;
     pthread_mutex_t *forchette;
-    pthread_mutex_t *safty;
     struct t_philosopher *next;
 
 } t_philosopher;
@@ -117,5 +116,8 @@ int eat(t_philosopher *rijal);
 int take_forks(t_philosopher *rijal);
 void print_state(t_philosopher *batal, e_state state);
 void *routine_labtal(void *abtal);
+
+void set_simulation_value(t_infos *infos, int value);
+int get_simulation_value(t_infos *info);
 
 

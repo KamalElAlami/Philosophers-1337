@@ -6,7 +6,7 @@
 /*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 15:18:19 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/15 15:17:29 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int check_death(t_philosopher *batal)
 {
-    ft_mutex(batal->info->end_mutex, LOCK);
-    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && batal->info->end_simulation == 0)
+    // ft_mutex(batal->info->end_mutex, LOCK);
+    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && !get_simulation_value(batal->info))
     {
-        batal->info->end_simulation = 1;
-        printf("%ld %d died\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
-        ft_mutex(batal->info->end_mutex, UNLOCK);
+        set_simulation_value(batal->info, 1);
+        print_state(batal, DIE);
+        // ft_mutex(batal->info->end_mutex, UNLOCK);
         return (1);
     }
-    ft_mutex(batal->info->end_mutex, UNLOCK);
+    // ft_mutex(batal->info->end_mutex, UNLOCK);
     return (0);
 }
 
@@ -32,7 +32,7 @@ void *routine_labtal(void *philo)
     t_philosopher *rijal;
     rijal = (t_philosopher *)philo;
 
-    while (!rijal->info->end_simulation)
+    while (!get_simulation_value(rijal->info))
     {
         if (take_forks(rijal))
             break;
@@ -44,7 +44,7 @@ void *routine_labtal(void *philo)
             break;
         if ((rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals))
             break;
-        if (rijal->info->end_simulation)
+        if (get_simulation_value(rijal->info))
             break;
     }
 

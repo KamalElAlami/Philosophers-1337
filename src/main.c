@@ -6,16 +6,11 @@
 /*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 16:28:54 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/15 15:35:55 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
-
-void leaks(void)
-{
-	system("leaks philo");
-}
 
 void create_threads(t_philosopher **philos)
 {
@@ -51,9 +46,7 @@ void setup_data(t_infos *info, t_philosopher **philos)
 	while (tmp->next)
 	{
 		tmp->forchette = ft_malloc(sizeof(pthread_mutex_t), 0);
-		tmp->safty = ft_malloc(sizeof(pthread_mutex_t), 0);
 		ft_mutex(tmp->forchette, INIT);
-		ft_mutex(tmp->safty, INIT);
 		if (tmp->next == *philos)
 			break;
 		tmp = tmp->next;
@@ -87,7 +80,6 @@ int parse_input(char **data, int ac, t_infos *philo)
 }
 int main(int ac, char **av)
 {
-	atexit(leaks);
 	t_infos info; 
 	t_philosopher *abtal;
 

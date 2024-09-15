@@ -6,7 +6,7 @@
 /*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 16:27:00 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/14 21:33:01 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ void ft_usleep(long microseconds, t_philosopher *rijal)
         current = gettimestamp(MICRO);
         if (current - start >= microseconds || gettimestamp(MICRO) - rijal->last_meal >= rijal->info->time_to_die)
             break;
-        usleep(100);
+        usleep(50);
     }
 }
