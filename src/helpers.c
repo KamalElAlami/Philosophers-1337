@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/14 21:33:01 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 19:26:52 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ t_philosopher *new_batal(int index, t_infos *info)
     
     node = ft_malloc(sizeof(t_philosopher), 0);
     node->index = index;
-    node->fork_taken = 0;
-    node->fork = 0;
     node->last_meal = gettimestamp(MICRO);
     node->meals_eaten = 0;
     node->info = info;
@@ -69,20 +67,6 @@ void add_lbatal(t_philosopher **head, t_philosopher *node)
     node->next = *head;    
 }
 
-void print_list(t_philosopher *list)
-{
-    t_philosopher *tmp;
-
-    tmp = list;
-    while (tmp)
-    {
-        printf("index => %d\n", tmp->info->end_simulation);
-        if (tmp->next == list)
-            break ;
-        tmp = tmp->next;
-    }
-}
-
 void ft_usleep(long microseconds, t_philosopher *rijal)
 {
     long start;
@@ -92,7 +76,7 @@ void ft_usleep(long microseconds, t_philosopher *rijal)
     while (1)
     {
         current = gettimestamp(MICRO);
-        if (current - start >= microseconds || gettimestamp(MICRO) - rijal->last_meal >= rijal->info->time_to_die)
+        if (current - start >= microseconds || check_death(rijal))
             break;
         usleep(50);
     }

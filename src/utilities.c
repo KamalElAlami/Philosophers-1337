@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/15 15:37:48 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 16:03:33 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void fill_struct(char **data, int ac, t_infos *info)
     (*info).time_to_die = ft_atoi(data[2]) * 1e3;
     (*info).time_to_eat = ft_atoi(data[3]) * 1e3;
     (*info).time_to_sleep = ft_atoi(data[4]) * 1e3;
-    (*info).safety = ft_malloc(sizeof(pthread_mutex_t), 0);
-    ft_mutex((*info).safety, INIT);  
+    (*info).end_mutex = ft_malloc(sizeof(pthread_mutex_t), 0);
+    ft_mutex((*info).end_mutex, INIT);  
     (*info).print_mutex = ft_malloc(sizeof(pthread_mutex_t), 0);
     ft_mutex((*info).print_mutex, INIT);  
 }

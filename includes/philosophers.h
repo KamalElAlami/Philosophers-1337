@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 15:58:09 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:15:31 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_infos
     int time_to_sleep;
     int meals;
     int end_simulation;
-    pthread_mutex_t *safety;
+    pthread_mutex_t *end_mutex;
     pthread_mutex_t *print_mutex;
 }   t_infos;
 
@@ -71,10 +71,8 @@ typedef struct s_infos
 typedef struct t_philosopher
 {
     int index;
-    int fork;
     int meals_eaten;
     long last_meal;
-    int fork_taken;
     t_infos *info;
     pthread_t thread;
     pthread_mutex_t *forchette;
@@ -120,3 +118,4 @@ void *routine_labtal(void *abtal);
 
 int get_simulation_value(t_infos *info);
 void set_simulation_value(t_infos *infos, int value);
+int freq_check(t_philosopher *rijal);
