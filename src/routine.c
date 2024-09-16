@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 15:18:19 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 12:52:59 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,27 @@ int check_death(t_philosopher *batal)
     return (0);
 }
 
+int check_meals(t_philosopher *rijal)
+{
+    t_philosopher *clone;
+    int count;
+
+    if (rijal->info->meals == -1)
+        return (0);
+    clone = rijal;
+    count = 0;
+    while (clone)
+    {
+        if (clone->meals_eaten < clone->info->meals)
+            count++;
+        if (clone->next == rijal)
+            break ;
+        clone = clone->next;
+    }
+    if (!count)
+        return (1);
+    return (0);
+}
 
 void *routine_labtal(void *philo)
 {
@@ -34,17 +55,8 @@ void *routine_labtal(void *philo)
 
     while (!rijal->info->end_simulation)
     {
-        if (take_forks(rijal))
-            break;
-        if (eat(rijal))
-            break;
-        if (drop_forks(rijal))
-            break;
-        if (sleepnthink(rijal))
-            break;
-        if ((rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals))
-            break;
-        if (rijal->info->end_simulation)
+        if (take_forks(rijal) || eat(rijal) || drop_forks(rijal)
+            || sleepnthink(rijal) || check_meals(rijal) || rijal->info->end_simulation)
             break;
     }
 

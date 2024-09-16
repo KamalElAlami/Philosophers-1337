@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/13 16:28:54 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 12:29:26 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int parse_input(char **data, int ac, t_infos *philo)
 }
 int main(int ac, char **av)
 {
-	atexit(leaks);
 	t_infos info; 
 	t_philosopher *abtal;
 
@@ -99,6 +98,4 @@ int main(int ac, char **av)
 		ft_perror("Error: Invalid Input");
 	setup_data(&info, &abtal);
 	create_threads(&abtal);
-	// printf("shared value is <======= %d =======>\n", info.end_simulation);
-	// print_list(abtal);
 }
