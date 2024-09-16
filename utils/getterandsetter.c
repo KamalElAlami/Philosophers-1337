@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 22:23:16 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/15 22:23:38 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:41:11 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int get_simulation_value(t_infos *info)
 {
     int value;
-
     ft_mutex(info->end_mutex, LOCK);
     value = info->end_simulation;
     ft_mutex(info->end_mutex, UNLOCK);

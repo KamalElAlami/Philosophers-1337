@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 12:52:59 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:52:38 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 int check_death(t_philosopher *batal)
 {
-    ft_mutex(batal->info->end_mutex, LOCK);
-    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && batal->info->end_simulation == 0)
+    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && !get_simulation_value(batal->info))
     {
-        batal->info->end_simulation = 1;
+        set_simulation_value(batal->info, 1);
         printf("%ld %d died\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
-        ft_mutex(batal->info->end_mutex, UNLOCK);
         return (1);
     }
-    ft_mutex(batal->info->end_mutex, UNLOCK);
     return (0);
 }
 
@@ -48,15 +45,29 @@ int check_meals(t_philosopher *rijal)
     return (0);
 }
 
+void one_batal(t_philosopher *rijal)
+{
+    if (rijal->info->num_of_philos == 1)
+    {
+        ft_usleep(rijal->info->time_to_die, rijal);
+        printf("%ld %d died\n", gettimestamp(MILLI) - rijal->info->start_time, rijal->index);
+    }
+}
+
 void *routine_labtal(void *philo)
 {
     t_philosopher *rijal;
     rijal = (t_philosopher *)philo;
 
-    while (!rijal->info->end_simulation)
+    while (!get_simulation_value(rijal->info))
     {
-        if (take_forks(rijal) || eat(rijal) || drop_forks(rijal)
-            || sleepnthink(rijal) || check_meals(rijal) || rijal->info->end_simulation)
+        if (take_forks(rijal))
+        {
+            one_batal(rijal);
+            break ;
+        }
+        if (eat(rijal) || drop_forks(rijal)
+            || sleepnthink(rijal) || check_meals(rijal) || get_simulation_value(rijal->info))
             break;
     }
 
