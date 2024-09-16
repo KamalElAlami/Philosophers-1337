@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/15 15:17:29 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 15:57:20 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,45 @@
 
 int check_death(t_philosopher *batal)
 {
-    // ft_mutex(batal->info->end_mutex, LOCK);
     if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && !get_simulation_value(batal->info))
     {
         set_simulation_value(batal->info, 1);
-        print_state(batal, DIE);
-        // ft_mutex(batal->info->end_mutex, UNLOCK);
+        printf("%ld %d died\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
         return (1);
     }
-    // ft_mutex(batal->info->end_mutex, UNLOCK);
     return (0);
 }
 
+int check_meals(t_philosopher *rijal)
+{
+    t_philosopher *clone;
+    int count;
+
+    if (rijal->info->meals == -1)
+        return (0);
+    clone = rijal;
+    count = 0;
+    while (clone)
+    {
+        if (clone->meals_eaten < clone->info->meals)
+            count++;
+        if (clone->next == rijal)
+            break ;
+        clone = clone->next;
+    }
+    if (!count)
+        return (1);
+    return (0);
+}
+
+void one_batal(t_philosopher *rijal)
+{
+    if (rijal->info->num_of_philos == 1)
+    {
+        ft_usleep(rijal->info->time_to_die, rijal);
+        printf("%ld %d died\n", gettimestamp(MILLI) - rijal->info->start_time, rijal->index);
+    }
+}
 
 void *routine_labtal(void *philo)
 {
@@ -35,16 +62,12 @@ void *routine_labtal(void *philo)
     while (!get_simulation_value(rijal->info))
     {
         if (take_forks(rijal))
-            break;
-        if (eat(rijal))
-            break;
-        if (drop_forks(rijal))
-            break;
-        if (sleepnthink(rijal))
-            break;
-        if ((rijal->info->meals != -1 && rijal->meals_eaten >= rijal->info->meals))
-            break;
-        if (get_simulation_value(rijal->info))
+        {
+            one_batal(rijal);
+            break ;
+        }
+        if (eat(rijal) || drop_forks(rijal)
+            || sleepnthink(rijal) || check_meals(rijal) || get_simulation_value(rijal->info))
             break;
     }
 

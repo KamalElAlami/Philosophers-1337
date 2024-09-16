@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/15 15:37:15 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 15:58:09 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int take_forks(t_philosopher *rijal);
 void print_state(t_philosopher *batal, e_state state);
 void *routine_labtal(void *abtal);
 
-void set_simulation_value(t_infos *infos, int value);
+
 int get_simulation_value(t_infos *info);
-
-
+void set_simulation_value(t_infos *infos, int value);

@@ -4,8 +4,7 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=thread 
 RM = rm -f
 
-
-M_FILES = ./src/main.c ./src/utilities.c ./src/helpers.c ./src/routine.c ./src/routine_utils.c ./src/parsing_utils.c ./utils/tax_collector.c ./utils/getterssetters.c
+M_FILES = ./src/main.c ./src/utilities.c ./src/helpers.c ./src/routine.c ./src/routine_utils.c ./src/parsing_utils.c ./utils/tax_collector.c ./utils/getterandsetter.c
 
 INCS = ./Libft-1337/libft.h
 

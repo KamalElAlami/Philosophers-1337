@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 08:48:25 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/15 15:30:33 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/16 15:48:06 by kael-ala         ###   ########.fr       */ 
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void print_state(t_philosopher *batal, e_state state)
 {
     ft_mutex(batal->info->print_mutex, LOCK);
-    if (!get_simulation_value(batal->info) || state == DIE)
+    if (!get_simulation_value(batal->info))
     {
         if (state == TAKE_FORK && !check_death(batal))
             printf("%ld %d has taken a fork\n", gettimestamp(MILLI) - batal->info->start_time, batal->index);
@@ -39,7 +39,7 @@ int take_forks(t_philosopher *rijal)
         return (1);
     ft_mutex(rijal->forchette, LOCK);
     print_state(rijal, TAKE_FORK);
-    if (get_simulation_value(rijal->info) || rijal->info)
+    if (get_simulation_value(rijal->info) || rijal->info->num_of_philos == 1)
         return (1);
     ft_mutex(rijal->next->forchette, LOCK);
     print_state(rijal, TAKE_FORK);
