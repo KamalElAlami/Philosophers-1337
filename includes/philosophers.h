@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 23:54:51 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 18:15:31 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/18 00:39:59 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct t_philosopher
     t_infos *info;
     pthread_t thread;
     pthread_mutex_t *forchette;
+    pthread_mutex_t *meals_eaten_lock;
+    pthread_mutex_t *last_meal_lock;
     struct t_philosopher *next;
 
 } t_philosopher;
@@ -119,3 +121,8 @@ void *routine_labtal(void *abtal);
 int get_simulation_value(t_infos *info);
 void set_simulation_value(t_infos *infos, int value);
 int freq_check(t_philosopher *rijal);
+
+long get_lmeals_value(t_philosopher *rijal);
+void set_lmeals_value(t_philosopher *rijal, long timee);
+int get_cmeals_value(t_philosopher *rijal);
+void set_cmeals_value(t_philosopher *rijal);

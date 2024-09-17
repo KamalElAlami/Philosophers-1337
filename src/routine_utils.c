@@ -33,13 +33,13 @@ void print_state(t_philosopher *batal, e_state state)
 
 int take_forks(t_philosopher *rijal)
 {
-    if (rijal->index % 2 != 0 && rijal->meals_eaten == 0) 
+    if (rijal->index % 2 != 0 && !get_cmeals_value(rijal)) 
         ft_usleep(rijal->info->time_to_eat / 2, rijal);
-    if (check_death(rijal))
+    if (get_simulation_value(rijal->info))
         return (1);
     ft_mutex(rijal->forchette, LOCK);
     print_state(rijal, TAKE_FORK);
-    if (check_death(rijal) || rijal->info->num_of_philos == 1)
+    if (get_simulation_value(rijal->info) || rijal->info->num_of_philos == 1)
         return (1);
     ft_mutex(rijal->next->forchette, LOCK);
     print_state(rijal, TAKE_FORK);
@@ -48,22 +48,22 @@ int take_forks(t_philosopher *rijal)
 
 int eat(t_philosopher *rijal)
 {
-    if (check_death(rijal))
+    if (get_simulation_value(rijal->info))
     {
         ft_mutex(rijal->forchette, UNLOCK);
         ft_mutex(rijal->next->forchette, UNLOCK);
         return (1);
     }
     print_state(rijal, EAT);
-    rijal->last_meal = gettimestamp(MICRO);
+    set_lmeals_value(rijal, gettimestamp(MICRO));
     ft_usleep(rijal->info->time_to_eat, rijal);
-    rijal->meals_eaten++;
+    set_cmeals_value(rijal);
     return (0);
 }
 
 int drop_forks(t_philosopher *rijal)
 {
-    if (check_death(rijal))
+    if (get_simulation_value(rijal->info))
     {
         ft_mutex(rijal->forchette, UNLOCK);
         ft_mutex(rijal->next->forchette, UNLOCK);
@@ -76,12 +76,14 @@ int drop_forks(t_philosopher *rijal)
 
 int sleepnthink(t_philosopher *rijal)
 {
-    if (check_death(rijal))
+    if (get_simulation_value(rijal->info))
         return (1);
     print_state(rijal, SLEEP);
     ft_usleep(rijal->info->time_to_sleep, rijal);
-    if (check_death(rijal))
+    if (get_simulation_value(rijal->info))
         return (1);
     print_state(rijal, THINK);
+    if (get_simulation_value(rijal->info))
+        return (1);
     return (0);
 }

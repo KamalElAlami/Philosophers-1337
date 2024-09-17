@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 23:47:40 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 16:03:33 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/17 23:58:55 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void ft_pthread(pthread_t *thread, t_philosopher **philos, e_choices choice)
 void ft_perror(char *error_msg)
 {
     printf(RED_COLOR"%s\n"RESET, error_msg);
-    ft_malloc(0, 1);
     exit(EXIT_FAILURE);
 }
 

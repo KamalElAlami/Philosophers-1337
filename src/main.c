@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 18:11:20 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/18 00:43:32 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,18 @@ void create_threads(t_philosopher **philos)
 	temp = *philos;
 	while (i < temp->info->num_of_philos)
 	{
-		ft_pthread(&(temp->thread), &temp, JOIN);
+		ft_pthread(&(temp->thread), &temp, DETACH);
 		temp = temp->next;
 		i++;
+	}
+	temp = *philos;
+	while (1)
+	{
+		if (freq_check(temp))
+		{
+			usleep(2);
+			break ;
+		}
 	}
 }
 
@@ -46,7 +55,11 @@ void setup_data(t_infos *info, t_philosopher **philos)
 	while (tmp->next)
 	{
 		tmp->forchette = ft_malloc(sizeof(pthread_mutex_t), 0);
+		tmp->meals_eaten_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
+		tmp->last_meal_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
 		ft_mutex(tmp->forchette, INIT);
+		ft_mutex(tmp->meals_eaten_lock, INIT);
+		ft_mutex(tmp->last_meal_lock, INIT);
 		if (tmp->next == *philos)
 			break;
 		tmp = tmp->next;

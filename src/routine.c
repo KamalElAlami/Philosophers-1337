@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 18:15:21 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/18 00:42:37 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,14 @@ int freq_check(t_philosopher *rijal)
         if (check_death(clone))
             return (1);
         if (clone->next == rijal)
-            break ;
+            break;
         clone = clone->next;
     }
     return (0);
 }
-
 int check_death(t_philosopher *batal)
 {
-    if (get_simulation_value(batal->info))
-        return (1);
-    if (gettimestamp(MICRO) - batal->last_meal >= batal->info->time_to_die && !get_simulation_value(batal->info))
+    if (gettimestamp(MICRO) - get_lmeals_value(batal) >= batal->info->time_to_die && !get_simulation_value(batal->info))
     {
         set_simulation_value(batal->info, 1);
         print_state(batal, DIE);
@@ -46,13 +43,13 @@ int check_meals(t_philosopher *rijal)
     t_philosopher *clone;
     int count;
 
-    if (rijal->info->meals == -1)
+    if (get_cmeals_value(rijal) == -1)
         return (0);
     clone = rijal;
     count = 0;
     while (clone)
     {
-        if (clone->meals_eaten < clone->info->meals)
+        if (get_cmeals_value(clone) < clone->info->meals)
             count++;
         if (clone->next == rijal)
             break ;
@@ -86,7 +83,7 @@ void *routine_labtal(void *philo)
             break ;
         }
         if (eat(rijal) || drop_forks(rijal)
-            || sleepnthink(rijal) || check_meals(rijal) || check_death(rijal))
+            || sleepnthink(rijal) || check_meals(rijal) || get_simulation_value(rijal->info))
             break;
     }
 
