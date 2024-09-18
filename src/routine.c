@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/18 00:42:37 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:42:05 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int check_meals(t_philosopher *rijal)
     t_philosopher *clone;
     int count;
 
-    if (get_cmeals_value(rijal) == -1)
+    if (rijal->info->meals == -1)
         return (0);
     clone = rijal;
     count = 0;

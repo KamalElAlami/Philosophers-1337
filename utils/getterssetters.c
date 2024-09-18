@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 14:41:36 by dedsec            #+#    #+#             */
-/*   Updated: 2024/09/18 00:48:17 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/18 23:41:41 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,5 @@ void set_cmeals_value(t_philosopher *rijal)
 {
     ft_mutex(rijal->meals_eaten_lock, LOCK);
     rijal->meals_eaten++;
-    ft_mutex(rijal->meals_eaten_lock, LOCK);
+    ft_mutex(rijal->meals_eaten_lock, UNLOCK);
 }
