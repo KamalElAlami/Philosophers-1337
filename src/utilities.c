@@ -33,7 +33,7 @@ void ft_mutex(pthread_mutex_t *mutex, e_choices choice)
     else if (choice == UNLOCK)
         error_handler(pthread_mutex_unlock(mutex));
     else if (choice == DESTROY)
-        error_handler(pthread_mutex_destroy(mutex));
+       pthread_mutex_destroy(mutex);
     else
         ft_perror("Incorrect MUTEX choice");  
 }

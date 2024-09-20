@@ -12,10 +12,10 @@
 
 #include "../includes/philosophers.h"
 
-void error_handler(int error)
+int error_handler(int error)
 {
     if (error == 0)
-        return ;
+        return (0);
     else if (error == EAGAIN)
         ft_perror("Error: Insufficient resources to initialize mutex");
     else if (error == EINVAL)
@@ -34,6 +34,7 @@ void error_handler(int error)
         ft_perror("Error: Insufficient resources to initialize mutex");
     else
         ft_perror("Error: Unknown Error");
+    return (error);
 }
 
 t_philosopher *new_batal(int index, t_infos *info)

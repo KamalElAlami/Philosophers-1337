@@ -103,7 +103,7 @@ int check_overflow(char *number);
 int check_validity(char **data);
 void fill_struct(char **data, int ac, t_infos *info);
 void ft_perror(char *error_msg);
-void error_handler(int error);
+int error_handler(int error);
 void data_init(t_infos info, t_philosopher **philos);
 void *ft_malloc(size_t size, int flag);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/18 00:43:32 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:50:17 by dedsec           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,24 @@ int parse_input(char **data, int ac, t_infos *philo)
 	fill_struct(data, ac, philo);
 	return (1);
 }
+
+void clear_stuff(t_philosopher *philos, t_infos *info)
+{
+    t_philosopher *tmp;
+
+    tmp = philos;
+    while (tmp)
+    {
+        ft_mutex(tmp->forchette, DESTROY);
+        ft_mutex(tmp->meals_eaten_lock, DESTROY);
+        ft_mutex(tmp->last_meal_lock, DESTROY);
+        if (tmp->next == philos)
+            break;
+        tmp = tmp->next;
+    }
+	ft_mutex(info->end_mutex, DESTROY);
+	ft_mutex(info->print_mutex, DESTROY);
+}
 int main(int ac, char **av)
 {
 	t_infos info; 
@@ -104,4 +122,6 @@ int main(int ac, char **av)
 		ft_perror("Error: Invalid Input");
 	setup_data(&info, &abtal);
 	create_threads(&abtal);
+	// clear_stuff(abtal, &info);
+	ft_malloc(0, 1);
 }
