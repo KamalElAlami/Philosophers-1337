@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 22:01:02 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/16 19:26:52 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:28:53 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ void ft_usleep(long microseconds, t_philosopher *rijal)
         current = gettimestamp(MICRO);
         if (current - start >= microseconds || check_death(rijal))
             break;
-        usleep(50);
+        usleep(100);
     }
 }

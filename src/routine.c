@@ -6,7 +6,7 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 17:50:43 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/18 23:42:05 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:38:08 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int check_death(t_philosopher *batal)
 {
     if (gettimestamp(MICRO) - get_lmeals_value(batal) >= batal->info->time_to_die && !get_simulation_value(batal->info))
     {
+        printf(RED_COLOR"Philo  %d is died from check\n"RESET, batal->index);
         set_simulation_value(batal->info, 1);
         print_state(batal, DIE);
         return (1);
@@ -77,12 +78,7 @@ void *routine_labtal(void *philo)
 
     while (!get_simulation_value(rijal->info))
     {
-        if (take_forks(rijal))
-        {
-            one_batal(rijal);
-            break ;
-        }
-        if (eat(rijal) || drop_forks(rijal)
+        if (take_forks(rijal) || eat(rijal) || drop_forks(rijal)
             || sleepnthink(rijal) || check_meals(rijal) || get_simulation_value(rijal->info))
             break;
     }

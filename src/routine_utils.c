@@ -33,7 +33,7 @@ void print_state(t_philosopher *batal, e_state state)
 
 int take_forks(t_philosopher *rijal)
 {
-    if (rijal->index % 2 != 0 && !get_cmeals_value(rijal)) 
+    if (rijal->index % 2 == 0 && !get_cmeals_value(rijal)) 
         ft_usleep(rijal->info->time_to_eat / 2, rijal);
     if (get_simulation_value(rijal->info))
         return (1);

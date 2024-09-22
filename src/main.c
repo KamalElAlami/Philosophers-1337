@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dedsec <dedsec@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/19 12:50:17 by dedsec           ###   ########.fr       */
+/*   Updated: 2024/09/22 18:35:55 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,20 @@ void create_threads(t_philosopher **philos)
 		temp = temp->next;
 		i++;
 	}
-	i = 0;
-	temp = *philos;
-	while (i < temp->info->num_of_philos)
-	{
-		ft_pthread(&(temp->thread), &temp, DETACH);
-		temp = temp->next;
-		i++;
-	}
 	temp = *philos;
 	while (1)
 	{
 		if (freq_check(temp))
-		{
-			usleep(2);
 			break ;
-		}
+		usleep(1000);
+	}
+	i = 0;
+	temp = *philos;
+	while (i < temp->info->num_of_philos)
+	{
+		ft_pthread(&(temp->thread), &temp, JOIN);
+		temp = temp->next;
+		i++;
 	}
 }
 
@@ -122,6 +120,6 @@ int main(int ac, char **av)
 		ft_perror("Error: Invalid Input");
 	setup_data(&info, &abtal);
 	create_threads(&abtal);
-	// clear_stuff(abtal, &info);
+	clear_stuff(abtal, &info);
 	ft_malloc(0, 1);
 }
