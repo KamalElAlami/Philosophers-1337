@@ -6,120 +6,109 @@
 /*   By: kael-ala <kael-ala@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:53:49 by kael-ala          #+#    #+#             */
-/*   Updated: 2024/09/22 18:35:55 by kael-ala         ###   ########.fr       */
+/*   Updated: 2024/09/24 17:27:58 by kael-ala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-void create_threads(t_philosopher **philos)
+void	monitor(t_philosopher *rijal)
 {
-	int i;
-	t_philosopher *temp;
-
-	i = 0;
-	temp = *philos;
-	while (i < temp->info->num_of_philos)
-	{
-		ft_pthread(&(temp->thread), &temp, CREATE);
-		temp = temp->next;
-		i++;
-	}
-	temp = *philos;
 	while (1)
 	{
-		if (freq_check(temp))
+		if (check_meals(rijal) || freq_check(rijal))
 			break ;
-		usleep(1000);
-	}
-	i = 0;
-	temp = *philos;
-	while (i < temp->info->num_of_philos)
-	{
-		ft_pthread(&(temp->thread), &temp, JOIN);
-		temp = temp->next;
-		i++;
+		usleep(100);
 	}
 }
 
-void setup_data(t_infos *info, t_philosopher **philos)
+int	create_threads(t_philosopher **philos)
 {
-	int i;
-	t_philosopher *tmp;
+	int				i;
+	t_philosopher	*temp;
+
+	i = 0;
+	temp = *philos;
+	while (i < temp->info->num_of_philos)
+	{
+		if (ft_pthread(&(temp->thread), &temp, CREATE) != 0)
+			return (0);
+		temp = temp->next;
+		i++;
+	}
+	monitor(*philos);
+	i = 0;
+	temp = *philos;
+	while (i < temp->info->num_of_philos)
+	{
+		if (ft_pthread(&(temp->thread), &temp, JOIN) != 0)
+			return (0);
+		temp = temp->next;
+		i++;
+	}
+	return (1);
+}
+
+int	data_init(t_philosopher *rijal)
+{
+	rijal->forchette = ft_malloc(sizeof(pthread_mutex_t), 0);
+	if (!rijal->forchette)
+		return (0);
+	rijal->meals_eaten_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
+	if (!rijal->meals_eaten_lock)
+		return (0);
+	rijal->last_meal_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
+	if (!rijal->last_meal_lock)
+		return (0);
+	if (ft_mutex(rijal->forchette, INIT) != 0)
+		return (0);
+	if (ft_mutex(rijal->meals_eaten_lock, INIT) != 0)
+		return (0);
+	if (ft_mutex(rijal->last_meal_lock, INIT) != 0)
+		return (0);
+	return (1);
+}
+
+int	setup_data(t_infos *info, t_philosopher **philos)
+{
+	int				i;
+	t_philosopher	*tmp;
+
 	i = 1;
 	while (i <= (*info).num_of_philos)
 		add_lbatal(philos, new_batal(i++, info));
 	tmp = *philos;
 	while (tmp->next)
 	{
-		tmp->forchette = ft_malloc(sizeof(pthread_mutex_t), 0);
-		tmp->meals_eaten_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
-		tmp->last_meal_lock = ft_malloc(sizeof(pthread_mutex_t), 0);
-		ft_mutex(tmp->forchette, INIT);
-		ft_mutex(tmp->meals_eaten_lock, INIT);
-		ft_mutex(tmp->last_meal_lock, INIT);
-		if (tmp->next == *philos)
-			break;
-		tmp = tmp->next;
-	}	
-}
-int parse_input(char **data, int ac, t_infos *philo)
-{
-	int i;
-	int j;
-
-	i = 1;
-	if (!data[1] || !data[2] || !data[3] || !data[4])
-		return (0);
-	while (data[i])
-	{
-		j = 0;
-		while (data[i][j])
-		{
-			if (!ft_isdigit(data[i][j]))
-				return (0);
-			j++;
-		}
-		if (!check_overflow(data[i]))
+		if (!data_init(tmp))
 			return (0);
-		i++;
+		if (tmp->next == *philos)
+			break ;
+		tmp = tmp->next;
 	}
-	if (!check_validity(data))
-		return (0);
-	fill_struct(data, ac, philo);
 	return (1);
 }
 
-void clear_stuff(t_philosopher *philos, t_infos *info)
+int	main(int ac, char **av)
 {
-    t_philosopher *tmp;
-
-    tmp = philos;
-    while (tmp)
-    {
-        ft_mutex(tmp->forchette, DESTROY);
-        ft_mutex(tmp->meals_eaten_lock, DESTROY);
-        ft_mutex(tmp->last_meal_lock, DESTROY);
-        if (tmp->next == philos)
-            break;
-        tmp = tmp->next;
-    }
-	ft_mutex(info->end_mutex, DESTROY);
-	ft_mutex(info->print_mutex, DESTROY);
-}
-int main(int ac, char **av)
-{
-	t_infos info; 
-	t_philosopher *abtal;
+	t_infos			info;
+	t_philosopher	*abtal;
 
 	abtal = NULL;
 	info.start_time = gettimestamp(MILLI);
 	if (ac != 5 && ac != 6)
+	{
 		ft_perror("Usage : NUM_PHILOS TIME_DIE TIME_EAT TIME_SLEEP");
+		return (1);
+	}
 	if (!parse_input(av, ac, &info))
+	{
 		ft_perror("Error: Invalid Input");
-	setup_data(&info, &abtal);
-	create_threads(&abtal);
+		return (1);
+	}
+	if (!setup_data(&info, &abtal))
+		return (1);
+	if (!create_threads(&abtal))
+		return (1);
 	clear_stuff(abtal, &info);
-	ft_malloc(0, 1);
 }
